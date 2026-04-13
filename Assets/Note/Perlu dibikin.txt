@@ -1,0 +1,8 @@
+Bikin feedback saat mengambil makanan benar dan salah
+Bikin BGM gameplay
+Bikin BGM main menu
+Bikin Sound gunung bergetar dan longsor 
+Bikin suara bebatuan jatuh
+Bikin suara gempa
+Bikin suara mati
+Bikin suara hidup
