@@ -17,6 +17,11 @@ public class RollingBoulder : MonoBehaviour
     private bool isInitialized = false;
     private bool hasHitPlayer = false;
 
+    // --- Variabel untuk mendeteksi Area Target (Gizmo) ---
+    private Vector3 targetCenter;
+    private Vector3 targetSize;
+    private bool hasTargetArea = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -38,6 +43,14 @@ public class RollingBoulder : MonoBehaviour
         }
     }
 
+    // Fungsi baru untuk menerima data kotak Gizmo dari LandslideTrap
+    public void SetTargetArea(Vector3 center, Vector3 size)
+    {
+        targetCenter = center;
+        targetSize = size;
+        hasTargetArea = true;
+    }
+
     private void FixedUpdate()
     {
         if (!isInitialized || rb == null) return;
@@ -47,6 +60,19 @@ public class RollingBoulder : MonoBehaviour
         if (horizontalVelocity.magnitude < maxSpeed)
         {
             rb.AddForce(moveDirection * moveForce * Time.fixedDeltaTime, ForceMode.Acceleration);
+        }
+    }
+
+    private void Update()
+    {
+        // Cek apakah batu sudah memasuki koordinat kotak target (Gizmo)
+        if (hasTargetArea)
+        {
+            Bounds targetBounds = new Bounds(targetCenter, targetSize);
+            if (targetBounds.Contains(transform.position))
+            {
+                Destroy(gameObject); // Despawn karena sudah menyentuh gizmo area target
+            }
         }
     }
 
