@@ -1361,7 +1361,7 @@ Transform:
   m_GameObject: {fileID: 263596860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.15, y: -8.78, z: 21.57}
+  m_LocalPosition: {x: 44.15, y: -7.64, z: 21.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3074,7 +3074,8 @@ MonoBehaviour:
   boulderSpawnSpreadZ: 0.5
   useRandomTargetArea: 1
   targetAreaWidth: 4
-  targetAreaLength: 48
+  targetAreaLength: 55.6
+  targetAreaHeight: 5
   drawTargetAreaGizmo: 1
 --- !u!4 &415917909
 Transform:
@@ -7836,7 +7837,7 @@ MonoBehaviour:
   minSpawnTime: 1
   maxSpawnTime: 2
   mysteryBoxPrefab: {fileID: 3172889542321856454, guid: 85bf0ffd58d5f8d41ac1b372c1f3eca2, type: 3}
-  mysteryBoxCooldown: 6
+  mysteryBoxCooldown: 10
 --- !u!1 &1192925400 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5032367554210779434, guid: eddf67533564e2e41b1d6809445af739, type: 3}
@@ -10727,7 +10728,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 617e44f937fb0dd498b8737fe4b9ad80, type: 3}
       propertyPath: m_LocalScale.x
-      value: 104.04559
+      value: 117.57152
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 617e44f937fb0dd498b8737fe4b9ad80, type: 3}
       propertyPath: m_LocalScale.y
@@ -10735,19 +10736,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 617e44f937fb0dd498b8737fe4b9ad80, type: 3}
       propertyPath: m_LocalScale.z
-      value: 198.50249
+      value: 230.02905
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 617e44f937fb0dd498b8737fe4b9ad80, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.872
+      value: 20.353
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 617e44f937fb0dd498b8737fe4b9ad80, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000063578
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 617e44f937fb0dd498b8737fe4b9ad80, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -27.400003
+      value: -30.634
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 617e44f937fb0dd498b8737fe4b9ad80, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13502,6 +13503,7 @@ MonoBehaviour:
   useRandomTargetArea: 1
   targetAreaWidth: 4
   targetAreaLength: 48
+  targetAreaHeight: 1
   drawTargetAreaGizmo: 1
 --- !u!4 &1916036172
 Transform:
