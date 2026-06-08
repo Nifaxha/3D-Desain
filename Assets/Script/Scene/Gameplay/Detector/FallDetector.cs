@@ -20,14 +20,21 @@ public class FallDetector : MonoBehaviour
 
     private void HandleFall(Collider other)
     {
-        if (isProcessingFall) return;
-
         PlayerCollector collector = other.GetComponent<PlayerCollector>();
         PlayerRespawn respawn = other.GetComponent<PlayerRespawn>();
 
+        // Cek jika yang jatuh adalah Player
         if (collector != null && respawn != null)
         {
-            StartCoroutine(FallRoutine(collector, respawn));
+            if (!isProcessingFall)
+            {
+                StartCoroutine(FallRoutine(collector, respawn));
+            }
+        }
+        else
+        {
+            // Jika BUKAN Player (misal: batu, makanan, mystery box), maka Despawn/Hancurkan
+            Destroy(other.gameObject);
         }
     }
 
