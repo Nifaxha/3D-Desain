@@ -28,6 +28,13 @@ public class MainMenuManager : MonoBehaviour
         Time.timeScale = 1f;
         AudioListener.pause = false;
 
+        // --- TAMBAHAN: Mainkan BGM Menu saat masuk Main Menu ---
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMenuBGM();
+        }
+        // -------------------------------------------------------
+
         SetCursorState(showCursor);
 
         if (mainMenuPanel != null)
@@ -44,6 +51,14 @@ public class MainMenuManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         AudioListener.pause = false;
+
+        // --- TAMBAHAN: Ganti ke BGM Gameplay saat tombol Play ditekan ---
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayGameplayBGM();
+        }
+        // ----------------------------------------------------------------
+
         SceneManager.LoadScene(gameplaySceneName);
     }
 

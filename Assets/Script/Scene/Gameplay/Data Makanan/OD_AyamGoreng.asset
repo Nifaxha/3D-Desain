@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foodId: Ayam_Goreng
   displayName: Ayam Goreng
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4a5c1e277425a0646b9f20d324d4508c, type: 3}

@@ -31,6 +31,11 @@ public class PlayerRespawn : MonoBehaviour
         controller.enabled = false;
         transform.position = chosenPoint.position + Vector3.up * respawnYOffset;
         controller.enabled = true;
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayRespawn(transform.position);
+        }
     }
 
     private Transform GetRandomRespawnPoint()
@@ -81,14 +86,12 @@ public class PlayerRespawn : MonoBehaviour
                 floor = point.GetComponentInParent<FallingFloor>();
             }
 
-            // Kalau point tidak terhubung ke floor manapun, anggap valid
             if (floor == null)
             {
                 validPoints.Add(point);
                 continue;
             }
 
-            // Hanya boleh respawn jika floor benar-benar aman
             if (floor.IsSafeForRespawn)
             {
                 validPoints.Add(point);

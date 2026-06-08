@@ -72,7 +72,6 @@ public class LandslideTrap : MonoBehaviour
     {
         isBusy = true;
 
-        // Warning
         float warningTimer = 0f;
         while (warningTimer < warningDuration)
         {
@@ -91,7 +90,12 @@ public class LandslideTrap : MonoBehaviour
             landslideMaterial.color = warningColor;
         }
 
-        // Slide animation
+        if (AudioManager.Instance != null)
+        {
+            Vector3 sfxPos = landslideVisual != null ? landslideVisual.position : transform.position;
+            AudioManager.Instance.PlayVolcanoErupt(sfxPos);
+        }
+
         if (landslideVisual != null)
         {
             float slideTimer = 0f;
@@ -108,7 +112,6 @@ public class LandslideTrap : MonoBehaviour
             landslideVisual.position = landslideEndPos;
         }
 
-        // Spawn boulders
         int spawnCount = Random.Range(minBoulderCount, maxBoulderCount + 1);
 
         for (int i = 0; i < spawnCount; i++)
@@ -119,7 +122,6 @@ public class LandslideTrap : MonoBehaviour
 
         yield return new WaitForSeconds(resetDelay);
 
-        // Reset visual
         if (landslideVisual != null)
         {
             float returnTimer = 0f;
@@ -158,6 +160,11 @@ public class LandslideTrap : MonoBehaviour
         Vector3 spawnPos = boulderSpawnPoint.position + spawnOffset;
 
         GameObject boulderObject = Instantiate(boulderPrefab, spawnPos, Quaternion.identity);
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayBoulderFall(spawnPos);
+        }
 
         RollingBoulder rollingBoulder = boulderObject.GetComponent<RollingBoulder>();
         if (rollingBoulder != null)

@@ -7,8 +7,12 @@ public class NpcFoodRecipe : ScriptableObject
     [Header("Recipe Info")]
     public string recipeName = "Burger Combo";
 
-    [Tooltip("Isi 1 sampai 3 makanan. Sebaiknya unik, tidak duplikat.")]
+    [Tooltip("Isi makanan yang dibutuhkan recipe ini. Maksimal 3.")]
     public List<OrderFoodData> requiredFoods = new List<OrderFoodData>();
+
+    [Header("Recipe UI")]
+    [Tooltip("1 gambar preview recipe lengkap, misalnya burger + fries dalam 1 gambar.")]
+    public Sprite recipePreviewImage;
 
     [Header("Reward")]
     public int rewardPoints = 10;

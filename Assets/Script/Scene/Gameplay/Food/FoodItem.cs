@@ -15,14 +15,28 @@ public class FoodItem : MonoBehaviour
     public static float GlobalFallSpeedMultiplier = 1f;
 
     [Header("Food Data")]
-    public FoodType foodType;
-    public int scoreValue = 1;
+    public FoodType foodType = FoodType.Normal;
+
+    [Tooltip("Poin untuk makanan biasa yang valid dan bukan request aktif.")]
+    public int normalPickupScore = 1;
+
     public float lifeTime = 6f;
 
-    [Header("NPC Order Integration")]
-    public bool useNpcOrderFood = false;
+    [Header("Wrong Food / Trash Food")]
+    [Tooltip("Centang jika item ini adalah makanan salah, misalnya tulang ikan / tulang ayam.")]
+    public bool isBadFood = false;
+
+    [Tooltip("Damage ke player jika item ini makanan salah.")]
+    public int badFoodDamage = 1;
+
+    [Header("NPC Request Integration")]
+    [Tooltip("Identitas makanan ini untuk sistem request NPC.")]
     public OrderFoodData orderFoodData;
-    public bool skipDefaultCollectLogicWhenNpcFood = true;
+
+    [Tooltip("Jika aktif, makanan ini bisa dicek ke request NPC.")]
+    public bool useForNpcRequest = true;
+
+    [Tooltip("Kalau item tidak cocok request aktif, item tetap dihancurkan atau tidak.")]
     public bool destroyEvenIfNotNeededByRequest = true;
 
     [Header("Fall Speed Control")]
@@ -31,14 +45,14 @@ public class FoodItem : MonoBehaviour
 
     private bool isCollected = false;
     private Collider itemCollider;
-    private Renderer itemRenderer;
+    private Renderer[] itemRenderers;
     private Rigidbody itemRigidbody;
     private NPCRequestQueueManager cachedRequestManager;
 
     private void Awake()
     {
         itemCollider = GetComponent<Collider>();
-        itemRenderer = GetComponent<Renderer>();
+        itemRenderers = GetComponentsInChildren<Renderer>(true);
         itemRigidbody = GetComponent<Rigidbody>();
     }
 
@@ -71,51 +85,55 @@ public class FoodItem : MonoBehaviour
 
         isCollected = true;
 
+        // 1. Kalau ini makanan salah / sampah, langsung damage
+        if (isBadFood || foodType == FoodType.Bomb)
+        {
+            collector.CollectWrongFood(this, badFoodDamage);
+            DisableItemPhysicsAndVisual();
+            Destroy(gameObject);
+            return;
+        }
+
         bool matchedRequest = false;
 
-        if (useNpcOrderFood && orderFoodData != null && cachedRequestManager != null)
+        // 2. Coba cocokkan ke request aktif
+        if (useForNpcRequest && orderFoodData != null && cachedRequestManager != null)
         {
             matchedRequest = cachedRequestManager.TryConsumeFood(orderFoodData);
         }
 
-        if (!useNpcOrderFood || !skipDefaultCollectLogicWhenNpcFood)
+        // 3. Kalau cocok request:
+        //    - bunyi benar
+        //    - TIDAK tambah score di sini
+        //    - karena score request sudah ditangani NPCRequestQueueManager
+        if (matchedRequest)
         {
-            collector.Collect(this);
+            collector.CollectCorrectRequestFood(this);
+        }
+        else
+        {
+            // 4. Kalau tidak cocok request tapi ini makanan valid,
+            //    tetap dianggap benar sebagai makanan biasa
+            collector.CollectNormalFood(this, normalPickupScore);
         }
 
         DisableItemPhysicsAndVisual();
 
-        if (!useNpcOrderFood)
+        if (useForNpcRequest)
         {
-            Destroy(gameObject);
-            return;
-        }
-
-        if (matchedRequest)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        if (destroyEvenIfNotNeededByRequest)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            isCollected = false;
-
-            if (itemCollider != null)
-                itemCollider.enabled = true;
-
-            if (itemRenderer != null)
-                itemRenderer.enabled = true;
-
-            if (itemRigidbody != null)
+            if (matchedRequest || destroyEvenIfNotNeededByRequest)
             {
-                itemRigidbody.isKinematic = false;
+                Destroy(gameObject);
             }
+            else
+            {
+                RestoreItem();
+            }
+
+            return;
         }
+
+        Destroy(gameObject);
     }
 
     private void DisableItemPhysicsAndVisual()
@@ -123,14 +141,42 @@ public class FoodItem : MonoBehaviour
         if (itemCollider != null)
             itemCollider.enabled = false;
 
-        if (itemRenderer != null)
-            itemRenderer.enabled = false;
+        if (itemRenderers != null)
+        {
+            for (int i = 0; i < itemRenderers.Length; i++)
+            {
+                if (itemRenderers[i] != null)
+                    itemRenderers[i].enabled = false;
+            }
+        }
 
         if (itemRigidbody != null)
         {
             itemRigidbody.linearVelocity = Vector3.zero;
             itemRigidbody.angularVelocity = Vector3.zero;
             itemRigidbody.isKinematic = true;
+        }
+    }
+
+    private void RestoreItem()
+    {
+        isCollected = false;
+
+        if (itemCollider != null)
+            itemCollider.enabled = true;
+
+        if (itemRenderers != null)
+        {
+            for (int i = 0; i < itemRenderers.Length; i++)
+            {
+                if (itemRenderers[i] != null)
+                    itemRenderers[i].enabled = true;
+            }
+        }
+
+        if (itemRigidbody != null)
+        {
+            itemRigidbody.isKinematic = false;
         }
     }
 }

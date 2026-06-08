@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foodId: French_Fries
   displayName: French Fries
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: a8c7b7aaa0bb47b47b7dbcf175aa2c5b, type: 3}

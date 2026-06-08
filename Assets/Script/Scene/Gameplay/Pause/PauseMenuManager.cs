@@ -6,9 +6,16 @@ using UnityEngine.UI;
 
 public class PauseMenuManager : MonoBehaviour
 {
+    [Header("References")]
+    [Tooltip("Masukkan Player di sini agar Pause Menu tahu jika player sedang mati")]
+    public PlayerCollector playerCollector; // Tambahan baru
+
     [Header("Panels")]
     public GameObject pausePanel;
     public GameObject settingsPanel;
+
+    [Header("Blur")]
+    public GameObject pauseBlurVolume;
 
     [Header("Settings UI")]
     public Slider masterVolumeSlider;
@@ -37,6 +44,9 @@ public class PauseMenuManager : MonoBehaviour
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
 
+        if (pauseBlurVolume != null)
+            pauseBlurVolume.SetActive(false);
+
         SetCursorState(false);
 
         SetupVolume();
@@ -45,6 +55,13 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Update()
     {
+        // MENCEGAH PAUSE JIKA GAME OVER
+        // Jika player sudah terhubung dan statusnya mati, hentikan fungsi di bawahnya
+        if (playerCollector != null && playerCollector.isDead)
+        {
+            return; 
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isPaused)
@@ -75,11 +92,26 @@ public class PauseMenuManager : MonoBehaviour
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
 
+        if (pauseBlurVolume != null)
+            pauseBlurVolume.SetActive(true);
+
         Time.timeScale = 0f;
         AudioListener.pause = true;
         SetCursorState(showCursorWhenPaused);
     }
 
+    public void TogglePause()
+    {
+        if (isPaused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
+    }
+    
     public void ResumeGame()
     {
         isPaused = false;
@@ -89,6 +121,9 @@ public class PauseMenuManager : MonoBehaviour
 
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
+
+        if (pauseBlurVolume != null)
+            pauseBlurVolume.SetActive(false);
 
         Time.timeScale = 1f;
         AudioListener.pause = false;
@@ -102,6 +137,9 @@ public class PauseMenuManager : MonoBehaviour
 
         if (settingsPanel != null)
             settingsPanel.SetActive(true);
+
+        if (pauseBlurVolume != null)
+            pauseBlurVolume.SetActive(true);
     }
 
     public void OpenPausePanel()
@@ -111,6 +149,9 @@ public class PauseMenuManager : MonoBehaviour
 
         if (pausePanel != null)
             pausePanel.SetActive(true);
+
+        if (pauseBlurVolume != null)
+            pauseBlurVolume.SetActive(true);
     }
 
     public void ExitToMainMenu()
@@ -118,7 +159,18 @@ public class PauseMenuManager : MonoBehaviour
         Time.timeScale = 1f;
         AudioListener.pause = false;
         isPaused = false;
+
+        if (pauseBlurVolume != null)
+            pauseBlurVolume.SetActive(false);
+
         SetCursorState(true);
+
+        // --- TAMBAHAN: Kembalikan BGM ke lagu Menu saat keluar game ---
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMenuBGM();
+        }
+        // --------------------------------------------------------------
 
         SceneManager.LoadScene(mainMenuSceneName);
     }

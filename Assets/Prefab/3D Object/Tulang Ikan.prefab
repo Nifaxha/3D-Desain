@@ -119,6 +119,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 091bfe6978829e947bcb5041791e9ad4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8197863375554223483}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 091bfe6978829e947bcb5041791e9ad4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1955230003951484435}
   m_SourcePrefab: {fileID: 100100000, guid: 091bfe6978829e947bcb5041791e9ad4, type: 3}
 --- !u!1 &6337879179317196041 stripped
 GameObject:
@@ -186,5 +189,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodType: 3
-  scoreValue: 1
+  normalPickupScore: 1
   lifeTime: 5
+  isBadFood: 1
+  badFoodDamage: 1
+  orderFoodData: {fileID: 0}
+  useForNpcRequest: 1
+  destroyEvenIfNotNeededByRequest: 1
+  useControlledFallSpeed: 0
+  baseFallSpeed: 2
+--- !u!114 &1955230003951484435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6337879179317196041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d3465b0b6f941408fc436c08ed2657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indicatorPrefab: {fileID: 6369164453119842993, guid: 6ee8dc8ee6bbd2e49b41d511f04ac1e1, type: 3}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  yOffset: 0.05
+  is2DSprite: 1
+  customRotation: {x: 0, y: 0, z: 90}

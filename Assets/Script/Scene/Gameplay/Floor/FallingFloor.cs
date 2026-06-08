@@ -153,6 +153,11 @@ public class FallingFloor : MonoBehaviour
     {
         currentState = FloorState.Warning;
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayEarthquake(transform.position);
+        }
+
         float timer = 0f;
         while (timer < warningDuration)
         {

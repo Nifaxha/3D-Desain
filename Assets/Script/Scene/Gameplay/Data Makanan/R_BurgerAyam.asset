@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 729fb5b4a84a70c4a9fb4adfca81d453, type: 3}
-  m_Name: R_BurgerOnly
+  m_Name: R_BurgerAyam
   m_EditorClassIdentifier: 
-  recipeName: Burger Combo Ayam
+  recipeName: Burger Combo
   requiredFoods:
   - {fileID: 11400000, guid: 3d14d64e050405542940de82e49ae5e7, type: 2}
   - {fileID: 11400000, guid: 7865295ac9445904b99d165711466775, type: 2}
+  recipePreviewImage: {fileID: 21300000, guid: 9fecf097f58621a468f3a2729ae54b7c, type: 3}
   rewardPoints: 10

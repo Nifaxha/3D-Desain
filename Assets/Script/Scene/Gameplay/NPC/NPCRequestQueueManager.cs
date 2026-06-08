@@ -12,7 +12,11 @@ public class NPCRequestQueueManager : MonoBehaviour
         public TMP_Text recipeNameText;
         public TMP_Text timerText;
         public TMP_Text rewardText;
-        public Image[] foodIcons;
+        public Image recipeImage;
+
+        [Header("Red Timer Overlay")]
+        public Image timerFillImage;
+
         public GameObject completedMark;
     }
 
@@ -21,6 +25,7 @@ public class NPCRequestQueueManager : MonoBehaviour
         public NpcFoodRecipe recipe;
         public List<OrderFoodData> remainingFoods = new List<OrderFoodData>();
         public float timeRemaining;
+        public float totalDuration;
     }
 
     [Header("Recipe Pool")]
@@ -158,12 +163,16 @@ public class NPCRequestQueueManager : MonoBehaviour
         RuntimeRequest request = new RuntimeRequest
         {
             recipe = selected,
-            timeRemaining = requestDuration
+            timeRemaining = requestDuration,
+            totalDuration = requestDuration
         };
 
         for (int i = 0; i < selected.requiredFoods.Count; i++)
         {
-            request.remainingFoods.Add(selected.requiredFoods[i]);
+            if (selected.requiredFoods[i] != null)
+            {
+                request.remainingFoods.Add(selected.requiredFoods[i]);
+            }
         }
 
         return request;
@@ -294,7 +303,10 @@ public class NPCRequestQueueManager : MonoBehaviour
             panel.root.SetActive(hasData);
 
         if (!hasData)
+        {
+            ResetPanelVisual(panel);
             return;
+        }
 
         if (panel.recipeNameText != null)
             panel.recipeNameText.text = request.recipe.recipeName;
@@ -310,32 +322,75 @@ public class NPCRequestQueueManager : MonoBehaviour
                 panel.timerText.text = "NEXT";
         }
 
-        if (panel.completedMark != null)
-            panel.completedMark.SetActive(false);
-
-        if (panel.foodIcons != null)
+        if (panel.recipeImage != null)
         {
-            for (int i = 0; i < panel.foodIcons.Length; i++)
+            panel.recipeImage.enabled = request.recipe.recipePreviewImage != null;
+            panel.recipeImage.sprite = request.recipe.recipePreviewImage;
+
+            Color imageColor = panel.recipeImage.color;
+            imageColor.a = 1f;
+            panel.recipeImage.color = imageColor;
+        }
+
+        if (panel.timerFillImage != null)
+        {
+            if (isActiveRightSlot)
             {
-                if (panel.foodIcons[i] == null)
-                    continue;
+                float progress = 0f;
 
-                if (i < request.recipe.requiredFoods.Count && request.recipe.requiredFoods[i] != null)
+                if (request.totalDuration > 0f)
                 {
-                    panel.foodIcons[i].enabled = true;
-                    panel.foodIcons[i].sprite = request.recipe.requiredFoods[i].icon;
+                    progress = 1f - (request.timeRemaining / request.totalDuration);
+                }
 
-                    bool stillNeeded = request.remainingFoods.Contains(request.recipe.requiredFoods[i]);
-                    Color c = panel.foodIcons[i].color;
-                    c.a = stillNeeded ? 1f : 0.35f;
-                    panel.foodIcons[i].color = c;
-                }
-                else
-                {
-                    panel.foodIcons[i].enabled = false;
-                    panel.foodIcons[i].sprite = null;
-                }
+                progress = Mathf.Clamp01(progress);
+
+                panel.timerFillImage.enabled = true;
+                panel.timerFillImage.fillAmount = progress;
+
+                Color fillColor = panel.timerFillImage.color;
+                fillColor.a = 0.45f;
+                panel.timerFillImage.color = fillColor;
+            }
+            else
+            {
+                panel.timerFillImage.enabled = true;
+                panel.timerFillImage.fillAmount = 0f;
+
+                Color fillColor = panel.timerFillImage.color;
+                fillColor.a = 0.25f;
+                panel.timerFillImage.color = fillColor;
             }
         }
+
+        if (panel.completedMark != null)
+            panel.completedMark.SetActive(false);
+    }
+
+    private void ResetPanelVisual(RequestPanelUI panel)
+    {
+        if (panel.recipeNameText != null)
+            panel.recipeNameText.text = string.Empty;
+
+        if (panel.timerText != null)
+            panel.timerText.text = string.Empty;
+
+        if (panel.rewardText != null)
+            panel.rewardText.text = string.Empty;
+
+        if (panel.recipeImage != null)
+        {
+            panel.recipeImage.sprite = null;
+            panel.recipeImage.enabled = false;
+        }
+
+        if (panel.timerFillImage != null)
+        {
+            panel.timerFillImage.fillAmount = 0f;
+            panel.timerFillImage.enabled = false;
+        }
+
+        if (panel.completedMark != null)
+            panel.completedMark.SetActive(false);
     }
 }

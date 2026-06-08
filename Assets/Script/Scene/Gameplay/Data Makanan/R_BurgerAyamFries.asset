@@ -17,4 +17,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7865295ac9445904b99d165711466775, type: 2}
   - {fileID: 11400000, guid: 3d14d64e050405542940de82e49ae5e7, type: 2}
   - {fileID: 11400000, guid: 544429eb0ae9f084b9cb7f8c2210b8db, type: 2}
+  recipePreviewImage: {fileID: 21300000, guid: 626ae0e44306a5142958d8526fa19dfb, type: 3}
   rewardPoints: 10
