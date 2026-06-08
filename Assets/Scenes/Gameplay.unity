@@ -7827,7 +7827,6 @@ MonoBehaviour:
   - {fileID: 337156514186060662, guid: f3b801782977de044827596b55c21dea, type: 3}
   - {fileID: 6337879179317196041, guid: f3b9f7f5cdd7aa249b52b17bdcad4745, type: 3}
   - {fileID: 9053719631539106653, guid: 0ea408c4c790d2a42b03ca51b288651d, type: 3}
-  - {fileID: 3172889542321856454, guid: 85bf0ffd58d5f8d41ac1b372c1f3eca2, type: 3}
   spawnPoints:
   - {fileID: 559237971}
   - {fileID: 773105812}
@@ -7836,6 +7835,8 @@ MonoBehaviour:
   - {fileID: 1892671548}
   minSpawnTime: 1
   maxSpawnTime: 2
+  mysteryBoxPrefab: {fileID: 3172889542321856454, guid: 85bf0ffd58d5f8d41ac1b372c1f3eca2, type: 3}
+  mysteryBoxCooldown: 6
 --- !u!1 &1192925400 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5032367554210779434, guid: eddf67533564e2e41b1d6809445af739, type: 3}
