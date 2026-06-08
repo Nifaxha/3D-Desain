@@ -3531,6 +3531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280751cfef9076149b7d1678eb59a2f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgmMixerGroup: {fileID: 1000128374652273895, guid: ebc17411cc53c5542b8ee9f6259edebe, type: 2}
+  sfxMixerGroup: {fileID: 4709673300387964750, guid: ebc17411cc53c5542b8ee9f6259edebe, type: 2}
   uiSource: {fileID: 0}
   bgmSource: {fileID: 0}
   menuBGM: {fileID: 8300000, guid: 3af9d730a0f7d0a46adf80c2f3b7bc4a, type: 3}
@@ -3538,22 +3540,19 @@ MonoBehaviour:
   gameplayBGM: {fileID: 8300000, guid: d53a38b32024a004aabf6a3636df37be, type: 3}
   gameplayBGMVolume: 1
   uiClickClip: {fileID: 8300000, guid: 0437d4cc836a181409a29bdda255a890, type: 3}
-  uiClickVolume: 1
+  uiClickVolume: 0.5
   volcanoEruptClip: {fileID: 8300000, guid: 8e62625b4c4ef30418723e48cf7d1025, type: 3}
-  volcanoEruptVolume: 1
+  volcanoEruptVolume: 0.5
   correctFoodClip: {fileID: 8300000, guid: b98e9e862d2c1864aba5a34a7e7a67b4, type: 3}
-  correctFoodVolume: 1
+  correctFoodVolume: 0.5
   wrongFoodClip: {fileID: 8300000, guid: d0896d2cddef2914e973154de0e41d66, type: 3}
-  wrongFoodVolume: 1
+  wrongFoodVolume: 0.5
   respawnClip: {fileID: 8300000, guid: 3adbc16743b55a54585a6c472d4d5e89, type: 3}
-  respawnVolume: 1
+  respawnVolume: 0.5
   earthquakeClip: {fileID: 8300000, guid: b2aebceaf814ec3439e4a3cf49b4f60f, type: 3}
-  earthquakeVolume: 1
+  earthquakeVolume: 0.4
   boulderFallClip: {fileID: 8300000, guid: 18b78f3696798494b9218a1f8a3ec1c4, type: 3}
-  boulderFallVolume: 1
-  spatialBlend: 1
-  minDistance: 5
-  maxDistance: 30
+  boulderFallVolume: 0.4
 --- !u!4 &1806431607
 Transform:
   m_ObjectHideFlags: 0

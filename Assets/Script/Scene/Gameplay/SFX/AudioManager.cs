@@ -1,8 +1,15 @@
 using UnityEngine;
+using UnityEngine.Audio; // <-- Tambahan wajib untuk menggunakan Audio Mixer
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+
+    [Header("Audio Mixer Groups")]
+    [Tooltip("Masukkan grup BGM dari Audio Mixer ke sini")]
+    public AudioMixerGroup bgmMixerGroup;
+    [Tooltip("Masukkan grup SFX dari Audio Mixer ke sini")]
+    public AudioMixerGroup sfxMixerGroup;
 
     [Header("Audio Sources")]
     public AudioSource uiSource;
@@ -10,10 +17,10 @@ public class AudioManager : MonoBehaviour
 
     [Header("Background Music (BGM)")]
     public AudioClip menuBGM;
-    [Range(0f, 1f)] public float menuBGMVolume = 1f;
+    [Range(0f, 1f)] public float menuBGMVolume = 0.5f;
     
     public AudioClip gameplayBGM;
-    [Range(0f, 1f)] public float gameplayBGMVolume = 1f;
+    [Range(0f, 1f)] public float gameplayBGMVolume = 0.5f;
 
     [Header("UI SFX")]
     public AudioClip uiClickClip;
@@ -38,68 +45,64 @@ public class AudioManager : MonoBehaviour
     public AudioClip boulderFallClip;
     [Range(0f, 1f)] public float boulderFallVolume = 1f;
 
-    [Header("3D Audio Settings")]
-    public float spatialBlend = 1f;
-    public float minDistance = 5f;
-    public float maxDistance = 30f;
-
-    private void Awake()
+   private void Awake()
     {
-        if (Instance != null && Instance != this)
+        // Memastikan hanya ada satu AudioManager
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
-
-        // Setup UI Audio Source
-        if (uiSource == null)
-        {
-            uiSource = gameObject.AddComponent<AudioSource>();
-        }
-        uiSource.playOnAwake = false;
-        uiSource.loop = false;
-        uiSource.spatialBlend = 0f;
-        uiSource.ignoreListenerPause = true;
-
-        // Setup BGM Audio Source
+        // --- TAMBAHAN BARU: Membuat AudioSource otomatis jika di Inspector masih kosong ---
         if (bgmSource == null)
         {
             bgmSource = gameObject.AddComponent<AudioSource>();
+            bgmSource.loop = true; // Musik BGM otomatis diatur agar berulang (loop)
+            bgmSource.playOnAwake = false;
         }
-        bgmSource.playOnAwake = false;
-        bgmSource.loop = true; // BGM harus di-loop
-        bgmSource.spatialBlend = 0f; // BGM selalu 2D
-
-        DontDestroyOnLoad(gameObject);
+        
+        if (uiSource == null)
+        {
+            uiSource = gameObject.AddComponent<AudioSource>();
+            uiSource.playOnAwake = false;
+        }
     }
 
-    // --- BGM METHODS ---
+    private void Start()
+    {
+        // Otomatis menyambungkan UI dan BGM source ke Mixer Group yang tepat saat game mulai
+        if (bgmSource != null && bgmMixerGroup != null)
+        {
+            bgmSource.outputAudioMixerGroup = bgmMixerGroup;
+        }
+        
+        if (uiSource != null && sfxMixerGroup != null)
+        {
+            uiSource.outputAudioMixerGroup = sfxMixerGroup;
+        }
+    }
 
     public void PlayMenuBGM()
     {
-        PlayBGM(menuBGM, menuBGMVolume);
+        if (bgmSource == null || menuBGM == null) return;
+        bgmSource.clip = menuBGM;
+        bgmSource.volume = menuBGMVolume;
+        bgmSource.Play();
     }
 
     public void PlayGameplayBGM()
     {
-        PlayBGM(gameplayBGM, gameplayBGMVolume);
-    }
-
-    private void PlayBGM(AudioClip clip, float volume)
-    {
-        if (clip == null || bgmSource == null) return;
-
-        // Mencegah BGM restart jika track yang sama sudah dimainkan
-        if (bgmSource.clip == clip && bgmSource.isPlaying) return;
-
-        bgmSource.clip = clip;
-        bgmSource.volume = volume;
+        if (bgmSource == null || gameplayBGM == null) return;
+        bgmSource.clip = gameplayBGM;
+        bgmSource.volume = gameplayBGMVolume;
         bgmSource.Play();
     }
-
-    // --- SFX METHODS ---
 
     public void PlayUIClick()
     {
@@ -152,13 +155,17 @@ public class AudioManager : MonoBehaviour
         AudioSource source = tempAudio.AddComponent<AudioSource>();
         source.clip = clip;
         source.volume = volume;
-        source.spatialBlend = spatialBlend;
-        source.minDistance = minDistance;
-        source.maxDistance = maxDistance;
-        source.playOnAwake = false;
-        source.loop = false;
+        source.spatialBlend = 1f; // 1 = 3D (suara bergantung jarak)
+        source.maxDistance = 500f; 
+        source.rolloffMode = AudioRolloffMode.Linear;
+
+        // --- INI BAGIAN TERPENTING: Menyambungkan suara 3D ke SFX Mixer ---
+        if (sfxMixerGroup != null)
+        {
+            source.outputAudioMixerGroup = sfxMixerGroup;
+        }
 
         source.Play();
-        Destroy(tempAudio, clip.length + 0.1f);
+        Destroy(tempAudio, clip.length);
     }
 }
