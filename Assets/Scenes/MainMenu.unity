@@ -3552,7 +3552,7 @@ MonoBehaviour:
   earthquakeClip: {fileID: 8300000, guid: b2aebceaf814ec3439e4a3cf49b4f60f, type: 3}
   earthquakeVolume: 0.4
   boulderFallClip: {fileID: 8300000, guid: 18b78f3696798494b9218a1f8a3ec1c4, type: 3}
-  boulderFallVolume: 0.4
+  boulderFallVolume: 0.3
 --- !u!4 &1806431607
 Transform:
   m_ObjectHideFlags: 0
