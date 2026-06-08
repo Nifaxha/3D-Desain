@@ -31,6 +31,7 @@ public class LandslideTrap : MonoBehaviour
     public bool useRandomTargetArea = true;
     public float targetAreaWidth = 8f;
     public float targetAreaLength = 4f;
+    public float targetAreaHeight = 1f; // Tinggi Gizmo yang baru kita buat sebelumnya
     public bool drawTargetAreaGizmo = true;
 
     private Vector3 landslideStartPos;
@@ -172,6 +173,10 @@ public class LandslideTrap : MonoBehaviour
             Vector3 targetPoint = GetRandomTargetPoint();
             Vector3 direction = (targetPoint - spawnPos).normalized;
             rollingBoulder.Initialize(direction);
+
+            // --- BARU: Mengirimkan info Gizmo Target Area ke Batu ---
+            Vector3 targetAreaSize = new Vector3(targetAreaWidth, targetAreaHeight, targetAreaLength);
+            rollingBoulder.SetTargetArea(boulderTargetDirection.position, targetAreaSize);
         }
     }
 
@@ -200,7 +205,7 @@ public class LandslideTrap : MonoBehaviour
         Gizmos.color = Color.cyan;
 
         Vector3 center = boulderTargetDirection.position;
-        Vector3 size = new Vector3(targetAreaWidth, 0.1f, targetAreaLength);
+        Vector3 size = new Vector3(targetAreaWidth, targetAreaHeight, targetAreaLength);
 
         Gizmos.DrawWireCube(center, size);
 
