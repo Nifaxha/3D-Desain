@@ -10,10 +10,10 @@ public class AudioManager : MonoBehaviour
 
     [Header("Background Music (BGM)")]
     public AudioClip menuBGM;
-    [Range(0f, 1f)] public float menuBGMVolume = 0.5f;
+    [Range(0f, 1f)] public float menuBGMVolume = 1f;
     
     public AudioClip gameplayBGM;
-    [Range(0f, 1f)] public float gameplayBGMVolume = 0.5f;
+    [Range(0f, 1f)] public float gameplayBGMVolume = 1f;
 
     [Header("UI SFX")]
     public AudioClip uiClickClip;
